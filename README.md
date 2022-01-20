@@ -1,4 +1,4 @@
-In This milestone you will be implementing a basic command line program that lets you manage your tasks.
+In This milestone i have implemented a basic command line program that lets you manage your tasks.
 
 The specification for this pogram is as follows,
 
@@ -47,7 +47,7 @@ $ ./tasks ls
 2. water the plants [5]
 ```
 
-index starts from 1, this is used to identify a particular task to complete or delete it.
+index starts from 1.
 
 ### 3. Add a new item
 
