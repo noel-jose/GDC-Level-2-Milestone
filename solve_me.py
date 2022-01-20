@@ -67,15 +67,18 @@ $ python tasks.py report # Statistics"""
 
     def add(self, args):
         priority = int(args[0])
-        if(priority in self.current_items.keys()):
-            while(priority in self.current_items.keys()):
-                self.current_items[priority+1] = self.current_items[priority]
+        task = args[1]
+        if priority in self.current_items.keys():
+            while priority in self.current_items.keys():
+                temp = self.current_items[priority]
+                self.current_items[priority] = task
                 priority += 1
-            print("Item with the given priority exists")
-        self.current_items[int(args[0])] = args[1]
+                task = temp
+            self.current_items[priority] = task
+        else:
+            self.current_items[priority] = task
         self.write_current()
         print(f'Added task: "{args[1]}" with priority {args[0]}')
-
 
     def done(self, args):
         key = int(args[0])
@@ -83,40 +86,31 @@ $ python tasks.py report # Statistics"""
             completed = self.current_items.pop(int(args[0]))
             self.write_current()
             self.completed_items.append(completed)
-            print(self.completed_items)
             self.write_completed()
             print("Marked item as done.")
         else:
             print(f"Error: no incomplete item with priority {key} exists.")
 
-
     def delete(self, args):
         key = int(args[0])
         if key in self.current_items.keys():
-            to_be_deleted = self.current_items.pop(int(args[0]))
+            self.current_items.pop(int(args[0]))
             print(f"Deleted item with priority {key}")
+            self.write_current()
         else:
             print(f"Error: item with priority {key} does not exist. Nothing deleted.")
 
-
     def ls(self):
         items = self.current_items
-        i = 1
-        for key in items:
-            print(f"{i}. {items[key]} [{key}]")
-            i = i + 1
+        for index, key in enumerate(items):
+            print(f"{index+1}. {items[key]} [{key}]")
 
     def report(self):
-        i = 1
         items = self.current_items
         print(f"Pending : {len(items)}")
-        for key in items:
-            print(f"{i}. {items[key]} [{key}]")
-            i = i + 1
-        i = 1 
+        for index, key in enumerate(items):
+            print(f"{index+1}. {items[key]} [{key}]")
         items = self.completed_items
         print(f"\nCompleted : {len(items)}")
-        for item in items:
-            print(f"{i}. {item}")
-            i = i + 1
-
+        for index, item in enumerate(items):
+            print(f"{index+1}. {item}")
